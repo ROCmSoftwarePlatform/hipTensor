@@ -74,6 +74,27 @@ namespace hiptensor
     {
         return std::accumulate(lengths.begin(), lengths.end(), T{1}, std::multiplies<T>());
     }
+
+    const uint32_t HIPTENSOR_MAX_RANK = 6;
+
+    static inline uint32_t getRank(std::vector<std::size_t> const& a_ms_ks_strides)
+    {
+        std::vector<std::size_t> strides = a_ms_ks_strides;
+
+        if(HIPTENSOR_DATA_LAYOUT_COL_MAJOR)
+        {
+            std::reverse(strides.begin(), strides.end());
+        }
+
+        for(auto i = 1; i < HIPTENSOR_MAX_RANK * 2; i += 2)
+        {
+            if(strides[i] == 1)
+            {
+                return (i + 1) >> 1;
+            }
+        }
+        return 0;
+    }
 } // namespace hiptensor
 
 #endif // HIPTENSOR_SRC_UTIL_HPP
