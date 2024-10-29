@@ -193,6 +193,10 @@ hiptensorStatus_t hiptensorReduction(const hiptensorHandle_t*           handle,
     auto& logger = Logger::instance();
     char  msg[2048];
 
+    std::cout << "descA->mStrides: " << descA->mStrides << std::endl;
+    std::cout << "descC->mStrides: " << descC->mStrides << std::endl;
+    std::cout << "descD->mStrides: " << descD->mStrides << std::endl;
+
     snprintf(msg,
              sizeof(msg),
              "hiptensorReduction: handle=%p, alpha=%p, A=%p, descA=%p, modeA=%p, beta=%p, C=%p, "
@@ -336,6 +340,7 @@ hiptensorStatus_t hiptensorReduction(const hiptensorHandle_t*           handle,
                                                 streamConfig);
         if(isSupported)
         {
+            std::cout << "IS SUPPORTED\n\n";
             if(time < 0)
             {
                 return HIPTENSOR_STATUS_CK_ERROR;
@@ -369,6 +374,8 @@ hiptensorStatus_t hiptensorReduction(const hiptensorHandle_t*           handle,
 
             return HIPTENSOR_STATUS_SUCCESS;
         }
+        else
+            std::cout << "NOT SUPPORTED\n\n";
     }
 
     auto errorCode = HIPTENSOR_STATUS_INTERNAL_ERROR;

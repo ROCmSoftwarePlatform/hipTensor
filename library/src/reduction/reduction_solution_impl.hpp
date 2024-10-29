@@ -2,7 +2,7 @@
  *
  * MIT License
  *
- * Copyright (C) 2023-2024 Advanced Micro Devices, Inc. All rights reserved.
+ * Copyright (C) 2023-2025 Advanced Micro Devices, Inc. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -88,6 +88,7 @@ namespace hiptensor
         {
             using Base   = ReductionSolution;
             using Traits = MetaTraits<DeviceOp>;
+            std::cout << "initializing args\n\n";
 
             // Clear out the previous arguments
             resetArgs();
@@ -127,7 +128,9 @@ namespace hiptensor
                       return reduceModes;
                   };
             toCKArr(a_lengths, arrInLengths);
-            toCKArr(a_strides.empty() ? hiptensor::stridesFromLengths(a_lengths) : a_strides,
+            toCKArr(a_strides.empty()
+                        ? hiptensor::stridesFromLengths(a_lengths, HIPTENSOR_DATA_LAYOUT_COL_MAJOR)
+                        : a_strides,
                     arrInStrides);
 
             auto ckCLengths = c_lengths;
@@ -139,9 +142,17 @@ namespace hiptensor
                     1); // caller should guarantee that c_strides is empty if c_lengths is empty
             }
             toCKArr(ckCLengths, arrOutLengths);
-            toCKArr(ckCStrides.empty() ? hiptensor::stridesFromLengths(ckCLengths) : ckCStrides,
+            toCKArr(ckCStrides.empty()
+                        ? hiptensor::stridesFromLengths(ckCLengths, HIPTENSOR_DATA_LAYOUT_COL_MAJOR)
+                        : ckCStrides,
                     arrOutStrides);
             toCKArr(findReduceModes(a_modes, c_modes), reduceDims);
+
+            std::cout << "arrInLengths: " << arrInLengths << std::endl;
+            std::cout << "arrInStrides: " << arrInStrides << std::endl;
+            std::cout << "arrOutLengths: " << arrOutLengths << std::endl;
+            std::cout << "arrOutStrides: " << arrOutStrides << std::endl;
+            std::cout << "reduceDims: " << reduceDims << "\n\n";
 
             auto [in_elementwise_op, acc_elementwise_op]
                 = reductionUnaryOperators(opReduce,
@@ -201,15 +212,15 @@ namespace hiptensor
             typename ck::reduce_unary_operator<ReduceOpId, true, true>::AccElementwiseOperation;
 
         using DeviceOp    = ck::tensor_operation::device::DeviceReduce<InDataType,
-                                                                    AccDataType,
-                                                                    OutDataType,
-                                                                    Rank,
-                                                                    NumReduceDim,
-                                                                    ReduceOperation,
-                                                                    InElementwiseOperation,
-                                                                    AccElementwiseOperation,
-                                                                    PropagateNan,
-                                                                    OutputIndex>;
+                                                                       AccDataType,
+                                                                       OutDataType,
+                                                                       Rank,
+                                                                       NumReduceDim,
+                                                                       ReduceOperation,
+                                                                       InElementwiseOperation,
+                                                                       AccElementwiseOperation,
+                                                                       PropagateNan,
+                                                                       OutputIndex>;
         using DeviceOpPtr = ck::tensor_operation::device::DeviceReducePtr<InDataType,
                                                                           AccDataType,
                                                                           OutDataType,
