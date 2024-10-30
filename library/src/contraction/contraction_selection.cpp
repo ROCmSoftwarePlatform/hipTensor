@@ -376,7 +376,7 @@ namespace hiptensor
                             || std::count(b_ns_ks_lengths.cbegin(), b_ns_ks_lengths.cend(), 1);
 
                 // rank2 dim1 case
-                if(rank == 1 && dim1)
+                if(rank == 2 && dim1)
                 {
                     unique_id = 58303249112943560ull;
                 }
@@ -607,7 +607,7 @@ namespace hiptensor
                             || std::count(b_ns_ks_lengths.cbegin(), b_ns_ks_lengths.cend(), 1);
 
                 // rank2 dim1 case
-                if(rank == 1 && dim1)
+                if(rank == 2 && dim1)
                 {
                     unique_id = 16299024124514902126ull;
                 }
@@ -827,7 +827,7 @@ namespace hiptensor
                             || std::count(b_ns_ks_lengths.cbegin(), b_ns_ks_lengths.cend(), 1);
 
                 // rank2 dim1 case
-                if(rank == 1 && dim1)
+                if(rank == 2 && dim1)
                 {
                     unique_id = 8251132190088736039ull;
                 }
@@ -1052,7 +1052,7 @@ namespace hiptensor
                             || std::count(b_ns_ks_lengths.cbegin(), b_ns_ks_lengths.cend(), 1);
 
                 // rank2 dim1 case
-                if(rank == 1 && dim1)
+                if(rank == 2 && dim1)
                 {
                     unique_id = 8067958629699904967ull;
                 }
@@ -1272,7 +1272,7 @@ namespace hiptensor
                             || std::count(b_ns_ks_lengths.cbegin(), b_ns_ks_lengths.cend(), 1);
 
                 // rank2 dim1 case
-                if(rank == 1 && dim1)
+                if(rank == 2 && dim1)
                 {
                     unique_id = 14915761978535949477ull;
                 }
@@ -1492,7 +1492,7 @@ namespace hiptensor
                             || std::count(b_ns_ks_lengths.cbegin(), b_ns_ks_lengths.cend(), 1);
 
                 // rank2 dim1 case
-                if(rank == 1 && dim1)
+                if(rank == 2 && dim1)
                 {
                     unique_id = 11269655469469274301ull;
                 }
@@ -1712,7 +1712,7 @@ namespace hiptensor
                             || std::count(b_ns_ks_lengths.cbegin(), b_ns_ks_lengths.cend(), 1);
 
                 // rank2 dim1 case
-                if(rank == 1 && dim1)
+                if(rank == 2 && dim1)
                 {
                     unique_id = 2054609181761357786ull;
                 }
@@ -1942,7 +1942,7 @@ namespace hiptensor
                             || std::count(b_ns_ks_lengths.cbegin(), b_ns_ks_lengths.cend(), 1);
 
                 // rank2 dim1 case
-                if(rank == 1 && dim1)
+                if(rank == 2 && dim1)
                 {
                     unique_id = 15330878641001915472ull;
                 }
@@ -2172,7 +2172,7 @@ namespace hiptensor
                             || std::count(b_ns_ks_lengths.cbegin(), b_ns_ks_lengths.cend(), 1);
 
                 // rank2 dim1 case
-                if(rank == 1 && dim1)
+                if(rank == 2 && dim1)
                 {
                     unique_id = 14051358583041094215ull;
                 }
