@@ -13,6 +13,7 @@ Full documentation for hipTensor is available at [rocm.docs.amd.com/projects/hip
 * ASAN builds only support xnack+ targets.
 * ASAN builds use `-mcmodel=large` to accommodate library sizes greater than 2GB.
 * Updated the permute backend to accommodate changes to element-wise operations.
+* Updated the actor-critic implementation.
 
 ### Optimized
 
@@ -22,6 +23,8 @@ Full documentation for hipTensor is available at [rocm.docs.amd.com/projects/hip
 
 * Fixed a bug in randomized tensor input data generation.
 * Fixed default strides calculation to be in column major order.
+* Fixed small memory leak by properly destroying HIP event objects in tests.
+* Default strides calculations now follow column-major convention.
 * Various documentation formatting updates and fixes.
 
 
