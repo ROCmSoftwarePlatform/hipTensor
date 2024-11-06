@@ -35,7 +35,6 @@
 #include "ck/ck.hpp"
 #include "ck/library/reference_tensor_operation/cpu/reference_reduce.hpp"
 #include "ck/library/tensor_operation_instance/gpu/reduce/device_reduce_instance_blockwise.hpp"
-#include "ck/tensor_operation/gpu/device/impl/device_reduce_multiblock.hpp"
 #include "ck/tensor_operation/gpu/device/reduction_operator_mapping.hpp"
 #include "ck/utility/reduction_enums.hpp"
 
@@ -46,6 +45,8 @@
 #include "ck/library/utility/host_tensor.hpp"
 #include "ck/library/utility/host_tensor_generator.hpp"
 #include "ck/utility/reduction_enums.hpp"
+
+#include "ck_device_reduce_multiblock.hpp"
 
 namespace std
 {
