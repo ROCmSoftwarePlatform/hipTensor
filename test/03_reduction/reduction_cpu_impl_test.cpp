@@ -129,8 +129,6 @@ auto reduceWithCpu(hipDataType typeA, hipDataType typeC, hiptensorComputeType_t 
                                                       typeCompute,
                                                       0 /* stream */));
 
-    std::cout << "ref: " << referenceArray.data()[0] << ", cArray: " << cArray.data()[0] << "\n\n";
-
     return compareEqual(referenceArray.data(), cArray.data(), cArray.size(), typeCompute);
 }
 
