@@ -89,7 +89,6 @@ namespace hiptensor
         {
             using Base   = ReductionSolution;
             using Traits = MetaTraits<DeviceOp>;
-            std::cout << "initializing args\n\n";
 
             // Clear out the previous arguments
             resetArgs();
@@ -148,12 +147,6 @@ namespace hiptensor
                         : ckCStrides,
                     arrOutStrides);
             toCKArr(findReduceModes(a_modes, c_modes), reduceDims);
-
-            std::cout << "arrInLengths: " << arrInLengths << std::endl;
-            std::cout << "arrInStrides: " << arrInStrides << std::endl;
-            std::cout << "arrOutLengths: " << arrOutLengths << std::endl;
-            std::cout << "arrOutStrides: " << arrOutStrides << std::endl;
-            std::cout << "reduceDims: " << reduceDims << "\n\n";
 
             auto [in_elementwise_op, acc_elementwise_op]
                 = reductionUnaryOperators(opReduce,

@@ -155,7 +155,7 @@ namespace hiptensor
             getResource()->setupStorage(lengths, outputLengths, acDataType);
 
             // set mPrintElements to true to print element
-            mPrintElements = true;
+            mPrintElements = false;
         }
     }
 
@@ -300,14 +300,8 @@ namespace hiptensor
                                sortedOutputDims.cend(),
                                strideD.begin(),
                                [&dimToStride](uint64_t dim) { return dimToStride[dim]; });
-
-                printf("NOT EQUAL\n\n");
             }
             std::vector<int64_t> strideC = strideD;
-            std::cout << "strideC/D = " << strideD << "\n";
-            std::cout << "sortedOutputDims = " << sortedOutputDims << "\n";
-            std::cout << "nmodeA, nmodeC, nmodeD = " << nmodeA << ", " << nmodeC << ", " << nmodeD
-                      << "\n";
 
             hiptensorStatus_t  err;
             hiptensorHandle_t* handle;
