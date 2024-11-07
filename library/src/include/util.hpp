@@ -75,25 +75,19 @@ namespace hiptensor
         return std::accumulate(lengths.begin(), lengths.end(), T{1}, std::multiplies<T>());
     }
 
-    const uint32_t HIPTENSOR_MAX_RANK = 6;
-
+    // Get the rank of a tensor based on its strides
+    // Ex: a_ms_ks_lengths = [5, 6, 3, 4]
+    //     a_ms_ks_strides = [1, 5, 30, 90] (col major)
+    //                     = [72, 12, 4, 1] (row major)
+    //                rank = 2
+    //
+    // Ex: a_ms_ks_lengths = [5, 6, 3, 1, 4, 3, 4, 2]
+    //     a_ms_ks_strides = [1, 5, 30, 90, 90, 180, 540, 2160] (col major)
+    //                     = [1728, 288, 96, 96, 24, 8, 2, 1]   (row major)
+    //                rank = 4
     static inline uint32_t getRank(std::vector<std::size_t> const& a_ms_ks_strides)
     {
-        std::vector<std::size_t> strides = a_ms_ks_strides;
-
-        if(HIPTENSOR_DATA_LAYOUT_COL_MAJOR)
-        {
-            std::reverse(strides.begin(), strides.end());
-        }
-
-        for(auto i = 1; i < HIPTENSOR_MAX_RANK * 2; i += 2)
-        {
-            if(strides[i] == 1)
-            {
-                return (i + 1) >> 1;
-            }
-        }
-        return 0;
+        return a_ms_ks_strides.size() / 2;
     }
 } // namespace hiptensor
 
