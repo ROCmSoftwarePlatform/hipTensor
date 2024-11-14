@@ -2,7 +2,7 @@
  *
  * MIT License
  *
- * Copyright (C) 2023-2024 Advanced Micro Devices, Inc. All rights reserved.
+ * Copyright (C) 2023-2025 Advanced Micro Devices, Inc. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -150,9 +150,13 @@ namespace hiptensor
             // Fill problem metrics
             Base::mDim = Traits::NDim;
 
+            // Size count
+            Base::mSize
+                = std::accumulate(abLengths.cbegin(), abLengths.cend(), 1, std::multiplies{});
+
             // Byte count
-            Base::mBytes = sizeof(typename Traits::InDataT) * Base::mDim
-                           + sizeof(typename Traits::OutDataT) * Base::mDim;
+            Base::mBytes = (sizeof(typename Traits::InDataT) + sizeof(typename Traits::OutDataT))
+                           * Base::mSize;
 
             // Arg test
             Base::mValid = deviceOp->IsSupportedArgument(Base::mInvokerArgPtr.get());
@@ -177,15 +181,40 @@ namespace hiptensor
             ck::tensor_operation::element_wise::UnaryCombinedOp<Aop, Scale, Bop>,
             NumDim>;
 
+        using DeviceElementwisePermuteInstance
+            = ck::tensor_operation::device::DeviceElementwiseImpl<
+                InDataTypeTuple, // InDataTypeTuple
+                OutDataTypeTuple, // OutDataTypeTuple
+                // PassThrough,          // Elementwise
+                ck::tensor_operation::element_wise::UnaryCombinedOp<Aop, Scale, Bop>,
+                NumDim, // NumDim
+                256, // BlockSize
+                128, // M0PerBlock
+                128, // M1PerBlock
+                16, // M0PerThread
+                16, // M1PerThread
+                ck::Sequence<0, 1>, // ThreadClusterArrangeOrder
+                ck::Sequence<16>, // InScalarPerVectorSeq
+                ck::Sequence<16>>; // OutScalarPerVectorSeq
+
+        std::vector<std::unique_ptr<PermutationSolution>> result;
+        result.push_back(std::make_unique<PermutationSolutionImpl<PermutationOp>>(
+            std::make_unique<DeviceElementwisePermuteInstance>(
+                DeviceElementwisePermuteInstance{})));
+
+        /*
         using Factory
             = ck::tensor_operation::device::instance::DeviceOperationInstanceFactory<PermutationOp>;
 
         std::vector<std::unique_ptr<PermutationSolution>> result;
+		std::cout << "\n";
         for(auto& opPtr : Factory::GetInstances())
         {
             result.push_back(
                 std::make_unique<PermutationSolutionImpl<PermutationOp>>(std::move(opPtr)));
+			std::cout << result.back()->kernelName() << "\n";
         }
+*/
         return result;
     }
 
