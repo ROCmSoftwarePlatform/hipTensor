@@ -44,7 +44,7 @@ if( CMAKE_PROJECT_NAME STREQUAL "hiptensor" )
         target_include_directories(${BINARY_NAME} PRIVATE
                                 ${CMAKE_CURRENT_SOURCE_DIR}
                                 ${PROJECT_SOURCE_DIR}/samples
-								${PROJECT_SOURCE_DIR}/library/src/include/
+                                ${PROJECT_SOURCE_DIR}/library/src/include/
                                 ${PROJECT_SOURCE_DIR}/library/include)
 
         # Build this sample under custom target

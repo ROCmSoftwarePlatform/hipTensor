@@ -181,40 +181,15 @@ namespace hiptensor
             ck::tensor_operation::element_wise::UnaryCombinedOp<Aop, Scale, Bop>,
             NumDim>;
 
-        using DeviceElementwisePermuteInstance
-            = ck::tensor_operation::device::DeviceElementwiseImpl<
-                InDataTypeTuple, // InDataTypeTuple
-                OutDataTypeTuple, // OutDataTypeTuple
-                // PassThrough,          // Elementwise
-                ck::tensor_operation::element_wise::UnaryCombinedOp<Aop, Scale, Bop>,
-                NumDim, // NumDim
-                256, // BlockSize
-                128, // M0PerBlock
-                128, // M1PerBlock
-                16, // M0PerThread
-                16, // M1PerThread
-                ck::Sequence<0, 1>, // ThreadClusterArrangeOrder
-                ck::Sequence<16>, // InScalarPerVectorSeq
-                ck::Sequence<16>>; // OutScalarPerVectorSeq
-
-        std::vector<std::unique_ptr<PermutationSolution>> result;
-        result.push_back(std::make_unique<PermutationSolutionImpl<PermutationOp>>(
-            std::make_unique<DeviceElementwisePermuteInstance>(
-                DeviceElementwisePermuteInstance{})));
-
-        /*
         using Factory
             = ck::tensor_operation::device::instance::DeviceOperationInstanceFactory<PermutationOp>;
 
         std::vector<std::unique_ptr<PermutationSolution>> result;
-		std::cout << "\n";
         for(auto& opPtr : Factory::GetInstances())
         {
             result.push_back(
                 std::make_unique<PermutationSolutionImpl<PermutationOp>>(std::move(opPtr)));
-			std::cout << result.back()->kernelName() << "\n";
         }
-*/
         return result;
     }
 

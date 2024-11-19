@@ -28,17 +28,39 @@
 # Make the ck includes visible so we can build instances.
 get_target_property(composable_kernel_INCLUDES composable_kernel::device_other_operations INTERFACE_INCLUDE_DIRECTORIES)
 
-set(HIPTENSOR_PERMUTATION_TUNING "permutation_tuning")
 
-set(HIPTENSOR_PERMUTATION_TUNING_SOURCES
-   ${CMAKE_CURRENT_SOURCE_DIR}/permutation_tuning.cpp
-)
+function(add_permutation_tuning RANK)
 
-add_executable(${HIPTENSOR_PERMUTATION_TUNING} ${HIPTENSOR_PERMUTATION_TUNING_SOURCES})
+	set(HIPTENSOR_PERMUTATION_TUNING "permutation_tuning_${RANK}")
 
-set_target_properties(${HIPTENSOR_PERMUTATION_TUNING} PROPERTIES POSITION_INDEPENDENT_CODE ON)
-target_compile_options(${HIPTENSOR_PERMUTATION_TUNING} PRIVATE ${CMAKE_CXX_FLAGS} ${CLANG_DRIVER_MODE})
-target_link_options(${HIPTENSOR_PERMUTATION_TUNING} PRIVATE ${CLANG_DRIVER_MODE})
-target_include_directories(${HIPTENSOR_PERMUTATION_TUNING} PRIVATE ${composable_kernel_INCLUDES})
-target_link_libraries(${HIPTENSOR_PERMUTATION_TUNING} PRIVATE hip::device hip::host)
+	set(HIPTENSOR_PERMUTATION_TUNING_SOURCES
+		${CMAKE_CURRENT_SOURCE_DIR}/permutation_instance_${RANK}.cpp
+		${CMAKE_CURRENT_SOURCE_DIR}/permutation_instance_F16_${RANK}_256_64_64_4_4.cpp
+		${CMAKE_CURRENT_SOURCE_DIR}/permutation_instance_F32_${RANK}_256_64_64_4_4.cpp
+		${CMAKE_CURRENT_SOURCE_DIR}/permutation_instance_F16_${RANK}_256_64_64_16_16.cpp
+		${CMAKE_CURRENT_SOURCE_DIR}/permutation_instance_F32_${RANK}_256_64_64_16_16.cpp
+		${CMAKE_CURRENT_SOURCE_DIR}/permutation_instance_F16_${RANK}_256_128_128_8_8.cpp
+		${CMAKE_CURRENT_SOURCE_DIR}/permutation_instance_F32_${RANK}_256_128_128_8_8.cpp
+		${CMAKE_CURRENT_SOURCE_DIR}/permutation_instance_F16_${RANK}_256_128_128_16_16.cpp
+		${CMAKE_CURRENT_SOURCE_DIR}/permutation_instance_F32_${RANK}_256_128_128_16_16.cpp
+		${CMAKE_CURRENT_SOURCE_DIR}/permutation_instance_F16_${RANK}_miscellaneous.cpp
+		${CMAKE_CURRENT_SOURCE_DIR}/permutation_instance_F32_${RANK}_miscellaneous.cpp
+		${CMAKE_CURRENT_SOURCE_DIR}/permutation_tuning_${RANK}.cpp
+		)
 
+	add_executable(${HIPTENSOR_PERMUTATION_TUNING} ${HIPTENSOR_PERMUTATION_TUNING_SOURCES})
+
+	set_target_properties(${HIPTENSOR_PERMUTATION_TUNING} PROPERTIES POSITION_INDEPENDENT_CODE ON)
+	target_compile_options(${HIPTENSOR_PERMUTATION_TUNING} PRIVATE ${CMAKE_CXX_FLAGS} ${CLANG_DRIVER_MODE})
+	target_link_options(${HIPTENSOR_PERMUTATION_TUNING} PRIVATE ${CLANG_DRIVER_MODE})
+	target_include_directories(${HIPTENSOR_PERMUTATION_TUNING} PRIVATE ${composable_kernel_INCLUDES})
+	target_include_directories(${HIPTENSOR_PERMUTATION_TUNING} PRIVATE "${CMAKE_SOURCE_DIR}/library/src/include/" )
+	target_link_libraries(${HIPTENSOR_PERMUTATION_TUNING} PRIVATE hip::device hip::host)
+
+endfunction()
+
+add_permutation_tuning(2)
+add_permutation_tuning(3)
+add_permutation_tuning(4)
+add_permutation_tuning(5)
+add_permutation_tuning(6)
