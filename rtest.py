@@ -71,16 +71,13 @@ def parse_args():
                         help='Emulation set to run from rtest.xml (required, e.g. smoke)')
     parser.add_argument(      '--name', required=False, type=str, default=[], action='append',
                         help='Specifies tests to run from the set (optional, run all tests in the set by default)')
-    parser.add_argument('-g', '--debug', required=False, default=False,  action='store_true',
-                        help='Test Debug build (optional, default: false)')
     parser.add_argument('-o', '--output', type=str, required=False, default="xml",
                         help='Test output file (optional, default: test_detail.xml)')
     parser.add_argument('-a', '--argument', action=ArgAction, nargs=2, metavar=('NAME', 'VALUE'), default={},
                         help='Arguments to substitute into the xml file (optional, multiple)')
     parser.add_argument(      '--install_dir', type=str, required=False, default="build",
                         help='Installation directory where build or release folders are (optional, default: build)')
-    parser.add_argument(      '--fail_test', default=False, required=False, action='store_true',
-                        help='Return as if test failed (optional, default: false)')
+
 
     args = parser.parse_args()
 
@@ -399,8 +396,6 @@ def main():
     args = parse_args()
 
     status = run_tests()
-
-    if args.fail_test: status = 1
 
     if (status):
         sys.exit(status)
