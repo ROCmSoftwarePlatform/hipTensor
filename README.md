@@ -34,12 +34,13 @@ For more detailed information, please refer to the [hipTensor installation guide
 
 ### Project options
 
-| Option                          | Description                                       | Default Value                                                  |
-|---------------------------------|---------------------------------------------------|----------------------------------------------------------------|
-| AMDGPU_TARGETS                  | Build code for specific GPU target(s)             | gfx908:xnack-;gfx90a:xnack-;gfx90a:xnack+;gfx940;gfx941;gfx942 |
-| HIPTENSOR_BUILD_TESTS           | Build Tests                                       | ON                                                             |
-| HIPTENSOR_BUILD_SAMPLES         | Build Samples                                     | ON                                                             |
-| HIPTENSOR_BUILD_COMPRESSED_DBG  | Enable compressed debug symbols                   | ON                                                             |
+| Option                          | Description                                        | Default Value                                                  |
+|---------------------------------|----------------------------------------------------|----------------------------------------------------------------|
+| GPU_TARGETS                     | Build code for specific GPU target(s)              | gfx908:xnack-;gfx90a:xnack-;gfx90a:xnack+;gfx940;gfx941;gfx942 |
+| AMDGPU_TARGETS                  | (Deprecated) Build code for specific GPU target(s) | gfx908:xnack-;gfx90a:xnack-;gfx90a:xnack+;gfx940;gfx941;gfx942 |
+| HIPTENSOR_BUILD_TESTS           | Build Tests                                        | ON                                                             |
+| HIPTENSOR_BUILD_SAMPLES         | Build Samples                                      | ON                                                             |
+| HIPTENSOR_BUILD_COMPRESSED_DBG  | Enable compressed debug symbols                    | ON                                                             |
 | HIPTENSOR_DEFAULT_STRIDES_COL_MAJOR | Set hiptensor default data layout to column major | ON                                                             |
 
 ### Example configurations
