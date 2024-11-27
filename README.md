@@ -50,7 +50,7 @@ By default, the project is configured as Release mode. Here are some of the exam
 | Configuration                    | Command                                                                   |
 |----------------------------------|---------------------------------------------------------------------------|
 | Basic                            | `CC=hipcc CXX=hipcc cmake -B<build_dir> .`                                |
-| Targeting gfx908                 | `CC=hipcc CXX=hipcc cmake -B<build_dir> . -DAMDGPU_TARGETS=gfx908:xnack-` |
+| Targeting gfx908                 | `CC=hipcc CXX=hipcc cmake -B<build_dir> . -DGPU_TARGETS=gfx908:xnack-` |
 | Debug build                      | `CC=hipcc CXX=hipcc cmake -B<build_dir> . -DCMAKE_BUILD_TYPE=Debug`       |
 | Build without tests (default on) | `CC=hipcc CXX=hipcc cmake -B<build_dir> . -DHIPTENSOR_BUILD_TESTS=OFF`    |
 
