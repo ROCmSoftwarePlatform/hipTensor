@@ -18,6 +18,7 @@ Full documentation for hipTensor is available at [rocm.docs.amd.com/projects/hip
 * Updated permute backend to accommodate changes to element-wise ops implementation
 * Updated validation acceptance criteria to match CK backend tests
 * Renamed the CMake option `HIPTENSOR_DATA_LAYOUT_COL_MAJOR` to `HIPTENSOR_DEFAULT_STRIDES_COL_MAJOR`
+* Renamed the CMake option `AMDGPU_TARGETS` to `GPU_TARGETS`
 
 ### Fixes
 
