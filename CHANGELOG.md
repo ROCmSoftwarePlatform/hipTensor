@@ -4,7 +4,7 @@ Full documentation for hipTensor is available at [rocm.docs.amd.com/projects/hip
 
 ## (Unreleased) hipTensor 1.5.0 for ROCm 6.4.0
 
-### Changes
+### Changed
 
 * Renamed the CMake option `AMDGPU_TARGETS` to `GPU_TARGETS`
 
