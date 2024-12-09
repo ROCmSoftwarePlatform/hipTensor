@@ -111,7 +111,7 @@ if (BUILD_OFFLOAD_COMPRESS)
   if (NOT CXX_COMPILER_SUPPORTS_OFFLOAD_COMPRESS)
     message( STATUS "WARNING: BUILD_OFFLOAD_COMPRESS=ON but flag not supported by compiler. Ignoring option." )
     set(CMAKE_NO_BUILTIN_CHRPATH ON)
-  elseif(CXX_COMPILER_SUPPORTS_OFFLOAD_COMPRESS)
+  else
     set(CMAKE_NO_BUILTIN_CHRPATH OFF)
   endif()
 endif()
