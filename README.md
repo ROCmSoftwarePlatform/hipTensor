@@ -30,18 +30,18 @@ Optional:
 
 ## Build with CMake
 
-For more detailed information, please refer to the [hipTensor installation guide](https://rocm.docs.amd.com/projects/hipTensor/en/latest/installation.html).
+For more detailed information, please refer to the [hipTensor installation guide](https://rocm.docs.amd.com/projects/hipTensor/en/latest/install/installation.html).
 
 ### Project options
 
-| Option                          | Description                                        | Default Value                                                  |
-|---------------------------------|----------------------------------------------------|----------------------------------------------------------------|
-| GPU_TARGETS                     | Build code for specific GPU target(s)              | gfx908:xnack-;gfx90a:xnack-;gfx90a:xnack+;gfx940;gfx941;gfx942 |
-| AMDGPU_TARGETS                  | (Deprecated) Build code for specific GPU target(s) | gfx908:xnack-;gfx90a:xnack-;gfx90a:xnack+;gfx940;gfx941;gfx942 |
-| HIPTENSOR_BUILD_TESTS           | Build Tests                                        | ON                                                             |
-| HIPTENSOR_BUILD_SAMPLES         | Build Samples                                      | ON                                                             |
-| HIPTENSOR_BUILD_COMPRESSED_DBG  | Enable compressed debug symbols                    | ON                                                             |
-| HIPTENSOR_DEFAULT_STRIDES_COL_MAJOR | Set hiptensor default data layout to column major | ON                                                             |
+| Option                              | Description                                         | Default Value                                                    |
+|-------------------------------------|-----------------------------------------------------|------------------------------------------------------------------|
+| AMDGPU_TARGETS (Deprecated)         | Build code for specific GPU target(s)               | gfx908;gfx90a;gfx940;gfx941;gfx942                               |
+| GPU_TARGETS                         | Build code for specific GPU target(s)               | gfx908;gfx90a;gfx940;gfx941;gfx942                               |
+| HIPTENSOR_BUILD_TESTS               | Build Tests                                         | ON                                                               |
+| HIPTENSOR_BUILD_SAMPLES             | Build Samples                                       | ON                                                               |
+| HIPTENSOR_BUILD_COMPRESSED_DBG      | Enable compressed debug symbols                     | ON                                                               |
+| HIPTENSOR_DEFAULT_STRIDES_COL_MAJOR | Set hiptensor default data layout to column major   | ON                                                               |
 
 ### Example configurations
 
@@ -50,7 +50,7 @@ By default, the project is configured as Release mode. Here are some of the exam
 | Configuration                    | Command                                                                   |
 |----------------------------------|---------------------------------------------------------------------------|
 | Basic                            | `CC=hipcc CXX=hipcc cmake -B<build_dir> .`                                |
-| Targeting gfx908                 | `CC=hipcc CXX=hipcc cmake -B<build_dir> . -DGPU_TARGETS=gfx908:xnack-` |
+| Targeting gfx908                 | `CC=hipcc CXX=hipcc cmake -B<build_dir> . -DGPU_TARGETS=gfx908:xnack-`    |
 | Debug build                      | `CC=hipcc CXX=hipcc cmake -B<build_dir> . -DCMAKE_BUILD_TYPE=Debug`       |
 | Build without tests (default on) | `CC=hipcc CXX=hipcc cmake -B<build_dir> . -DHIPTENSOR_BUILD_TESTS=OFF`    |
 
@@ -75,4 +75,4 @@ The latest official documentation for hipTensor is available at:
 
 ## Contributing to the hipTensor Library
 
-Community collaboration is encouraged! If you are considering contributing, please follow the [hipTensor Contribution Guide](https://github.com/ROCm/hipTensor/CONTRIBUTING.md) to get started.
+Community collaboration is encouraged! If you are considering contributing, please follow the [hipTensor Contribution Guide](https://rocm.docs.amd.com/projects/hipTensor/en/latest/contribution/contributors-guide.html) to get started.

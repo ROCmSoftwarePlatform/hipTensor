@@ -4,32 +4,48 @@ Full documentation for hipTensor is available at [rocm.docs.amd.com/projects/hip
 
 ## (Unreleased) hipTensor 1.5.0 for ROCm 6.4.0
 
+### Added
+
+* Added benchmarking suites for contraction, permutation, and reduction. YAML files are categorized into bench and validation folders for organization
+* Added emulation test suites for contraction, permutation, and reduction
+* Support has been added for changing the default data layout using the `HIPTENSOR_DEFAULT_STRIDES_COL_MAJOR` environment variable
+
 ### Changed
 
-* Renamed the CMake option `AMDGPU_TARGETS` to `GPU_TARGETS`
+* Used `GPU_TARGETS` instead of `AMDGPU_TARGETS` in `cmakelists.txt`
 
-## (Unreleased) hipTensor 1.4.0 for ROCm 6.3.0
+### Optimized
 
-### Additions
+* Optimized the hyper-parameter selection algorithm for permutation
 
-* Added API support for tensor reduction of ranks 2, 3, 4, 5 and 6
-* Added CPU reference for tensor reductions
-* Added unit tests for tensor reductions
-* Added documentation for tensor reductions
+### Resolved issues
 
-### Changes
+* For CMake bug workaround, set `CMAKE_NO_BUILTIN_CHRPATH` when `BUILD_OFFLOAD_COMPRESS` is unset
 
-* Updated target archs for ASAN builds
-* ASAN library builds now use -mcmodel=large to accommodate larger lib size
-* Updated permute backend to accommodate changes to element-wise ops implementation
-* Updated validation acceptance criteria to match CK backend tests
-* Renamed the CMake option `HIPTENSOR_DATA_LAYOUT_COL_MAJOR` to `HIPTENSOR_DEFAULT_STRIDES_COL_MAJOR`
+## hipTensor 1.4.0 for ROCm 6.3.0
 
-### Fixes
+### Added
 
-* Fixed a bug in randomized tensor input data generation
-* Various documentation formatting updates and fixes
+* Added support for tensor reduction, including APIs, CPU reference, unit tests, and documentation
+
+### Changed
+
+* ASAN builds only support xnack+ targets.
+* ASAN builds use `-mcmodel=large` to accommodate library sizes greater than 2GB.
+* Updated the permute backend to accommodate changes to element-wise operations.
+* Updated the actor-critic implementation.
+
+### Optimized
+
 * Split kernel instances to improve build times
+
+### Resolved issues
+
+* Fixed a bug in randomized tensor input data generation.
+* Fixed the default strides calculation to be in column major order.
+* Fixed a small memory leak by properly destroying HIP event objects in tests.
+* Default strides calculations now follow column-major convention.
+* Various documentation formatting updates and fixes.
 
 ## hipTensor 1.3.0 for ROCm 6.2.0
 
