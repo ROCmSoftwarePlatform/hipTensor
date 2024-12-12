@@ -54,6 +54,7 @@ function(add_permutation_tuning RANK)
 	target_compile_options(${HIPTENSOR_PERMUTATION_TUNING} PRIVATE ${CMAKE_CXX_FLAGS} ${CLANG_DRIVER_MODE})
 	target_link_options(${HIPTENSOR_PERMUTATION_TUNING} PRIVATE ${CLANG_DRIVER_MODE})
 	target_include_directories(${HIPTENSOR_PERMUTATION_TUNING} PRIVATE ${composable_kernel_INCLUDES})
+	target_include_directories(${HIPTENSOR_PERMUTATION_TUNING} PRIVATE "${CMAKE_SOURCE_DIR}/library/include/" )
 	target_include_directories(${HIPTENSOR_PERMUTATION_TUNING} PRIVATE "${CMAKE_SOURCE_DIR}/library/src/include/" )
 	target_link_libraries(${HIPTENSOR_PERMUTATION_TUNING} PRIVATE hip::device hip::host)
 

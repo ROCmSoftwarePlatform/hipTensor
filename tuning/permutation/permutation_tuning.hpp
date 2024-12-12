@@ -123,12 +123,7 @@ namespace hiptensor
                 for(auto& broadcastPermute : broadcastPermutes)
                 {
                     auto argument = broadcastPermute->MakeArgumentPointer(
-                        ab_lengths,
-                        {a_strides},
-                        {b_strides},
-                        {A_d},
-                        {B_d},
-                        UnaryScaleSquare{PassThrough{}, PassThrough{}});
+                        ab_lengths, {a_strides}, {b_strides}, {A_d}, {B_d}, PassThrough{});
 
                     if(!broadcastPermute->IsSupportedArgument(argument.get()))
                     {
