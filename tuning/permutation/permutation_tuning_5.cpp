@@ -35,11 +35,11 @@ namespace hiptensor
         namespace permutation
         {
 
-            std::vector<std::unique_ptr<
-                DeviceElementwise<ck::Tuple<F32>, ck::Tuple<F32>, UnaryScaleSquare, 5>>>
+            std::vector<
+                std::unique_ptr<DeviceElementwise<ck::Tuple<F32>, ck::Tuple<F32>, PassThrough, 5>>>
                 genInstances_F32_5();
-            std::vector<std::unique_ptr<
-                DeviceElementwise<ck::Tuple<F16>, ck::Tuple<F16>, UnaryScaleSquare, 5>>>
+            std::vector<
+                std::unique_ptr<DeviceElementwise<ck::Tuple<F16>, ck::Tuple<F16>, PassThrough, 5>>>
                 genInstances_F16_5();
         }
     }

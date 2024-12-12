@@ -29,8 +29,9 @@ namespace hiptensor::tuning::permutation
 {
 
     void genInstances_F32_4_miscellaneous(
-        std::vector<std::unique_ptr<
-            DeviceElementwise<ck::Tuple<F32>, ck::Tuple<F32>, UnaryScaleSquare, 4>>>& instances)
+        std::vector<
+            std::unique_ptr<DeviceElementwise<ck::Tuple<F32>, ck::Tuple<F32>, PassThrough, 4>>>&
+            instances)
     {
         genInstances_miscellaneous<F32, 4>(instances);
     }
