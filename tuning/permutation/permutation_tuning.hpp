@@ -134,7 +134,7 @@ namespace hiptensor
 
                     auto  broadcastPermute_invoker_ptr = broadcastPermute->MakeInvokerPointer();
                     float ave_time                     = broadcastPermute_invoker_ptr->Run(
-                        argument.get(), StreamConfig{nullptr, time_kernel});
+                        argument.get(), StreamConfig{nullptr, time_kernel, 0, 5, 10});
                     std::size_t flop = elementsA + elementsB;
 
                     std::size_t num_btype
