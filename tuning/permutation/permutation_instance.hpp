@@ -118,13 +118,9 @@ namespace hiptensor
                                                               RANK>>>& instances)
             {
                 // clang-format off
-                instances.push_back( std::make_unique<HiptensorDeviceElementwiseImpl<ck::Tuple<DataType>, ck::Tuple<DataType>, PassThrough, RANK, 256, 128, 128, 16, 16, ck::Sequence<0, 1>, ck::Sequence<1>, ck::Sequence<1>>>());
-                instances.push_back( std::make_unique<HiptensorDeviceElementwiseImpl<ck::Tuple<DataType>, ck::Tuple<DataType>, PassThrough, RANK, 256, 128, 128, 16, 16, ck::Sequence<0, 1>, ck::Sequence<2>, ck::Sequence<2>>>());
                 instances.push_back( std::make_unique<HiptensorDeviceElementwiseImpl<ck::Tuple<DataType>, ck::Tuple<DataType>, PassThrough, RANK, 256, 128, 128, 16, 16, ck::Sequence<0, 1>, ck::Sequence<4>, ck::Sequence<4>>>());
                 instances.push_back( std::make_unique<HiptensorDeviceElementwiseImpl<ck::Tuple<DataType>, ck::Tuple<DataType>, PassThrough, RANK, 256, 128, 128, 16, 16, ck::Sequence<0, 1>, ck::Sequence<8>, ck::Sequence<8>>>());
                 instances.push_back( std::make_unique<HiptensorDeviceElementwiseImpl<ck::Tuple<DataType>, ck::Tuple<DataType>, PassThrough, RANK, 256, 128, 128, 16, 16, ck::Sequence<0, 1>, ck::Sequence<16>, ck::Sequence<16>>>());
-                instances.push_back( std::make_unique<HiptensorDeviceElementwiseImpl<ck::Tuple<DataType>, ck::Tuple<DataType>, PassThrough, RANK, 256, 128, 128, 16, 16, ck::Sequence<1, 0>, ck::Sequence<1>, ck::Sequence<1>>>());
-                instances.push_back( std::make_unique<HiptensorDeviceElementwiseImpl<ck::Tuple<DataType>, ck::Tuple<DataType>, PassThrough, RANK, 256, 128, 128, 16, 16, ck::Sequence<1, 0>, ck::Sequence<2>, ck::Sequence<2>>>());
                 instances.push_back( std::make_unique<HiptensorDeviceElementwiseImpl<ck::Tuple<DataType>, ck::Tuple<DataType>, PassThrough, RANK, 256, 128, 128, 16, 16, ck::Sequence<1, 0>, ck::Sequence<4>, ck::Sequence<4>>>());
                 instances.push_back( std::make_unique<HiptensorDeviceElementwiseImpl<ck::Tuple<DataType>, ck::Tuple<DataType>, PassThrough, RANK, 256, 128, 128, 16, 16, ck::Sequence<1, 0>, ck::Sequence<8>, ck::Sequence<8>>>());
                 instances.push_back( std::make_unique<HiptensorDeviceElementwiseImpl<ck::Tuple<DataType>, ck::Tuple<DataType>, PassThrough, RANK, 256, 128, 128, 16, 16, ck::Sequence<1, 0>, ck::Sequence<16>, ck::Sequence<16>>>());
@@ -139,16 +135,6 @@ namespace hiptensor
                                                               RANK>>>& instances)
             {
                 // clang-format off
-                instances.push_back( std::make_unique<HiptensorDeviceElementwiseImpl<ck::Tuple<DataType>, ck::Tuple<DataType>, PassThrough, RANK, 256, 128, 128, 32, 32, ck::Sequence<0, 1>, ck::Sequence<1>, ck::Sequence<1>>>());
-                instances.push_back( std::make_unique<HiptensorDeviceElementwiseImpl<ck::Tuple<DataType>, ck::Tuple<DataType>, PassThrough, RANK, 256, 128, 128, 32, 32, ck::Sequence<0, 1>, ck::Sequence<2>, ck::Sequence<2>>>());
-                instances.push_back( std::make_unique<HiptensorDeviceElementwiseImpl<ck::Tuple<DataType>, ck::Tuple<DataType>, PassThrough, RANK, 256, 128, 128, 32, 32, ck::Sequence<0, 1>, ck::Sequence<4>, ck::Sequence<4>>>());
-                instances.push_back( std::make_unique<HiptensorDeviceElementwiseImpl<ck::Tuple<DataType>, ck::Tuple<DataType>, PassThrough, RANK, 256, 128, 128, 32, 32, ck::Sequence<0, 1>, ck::Sequence<8>, ck::Sequence<8>>>());
-                instances.push_back( std::make_unique<HiptensorDeviceElementwiseImpl<ck::Tuple<DataType>, ck::Tuple<DataType>, PassThrough, RANK, 256, 128, 128, 32, 32, ck::Sequence<0, 1>, ck::Sequence<16>, ck::Sequence<16>>>());
-                instances.push_back( std::make_unique<HiptensorDeviceElementwiseImpl<ck::Tuple<DataType>, ck::Tuple<DataType>, PassThrough, RANK, 256, 128, 128, 32, 32, ck::Sequence<1, 0>, ck::Sequence<1>, ck::Sequence<1>>>());
-                instances.push_back( std::make_unique<HiptensorDeviceElementwiseImpl<ck::Tuple<DataType>, ck::Tuple<DataType>, PassThrough, RANK, 256, 128, 128, 32, 32, ck::Sequence<1, 0>, ck::Sequence<2>, ck::Sequence<2>>>());
-                instances.push_back( std::make_unique<HiptensorDeviceElementwiseImpl<ck::Tuple<DataType>, ck::Tuple<DataType>, PassThrough, RANK, 256, 128, 128, 32, 32, ck::Sequence<1, 0>, ck::Sequence<4>, ck::Sequence<4>>>());
-                instances.push_back( std::make_unique<HiptensorDeviceElementwiseImpl<ck::Tuple<DataType>, ck::Tuple<DataType>, PassThrough, RANK, 256, 128, 128, 32, 32, ck::Sequence<1, 0>, ck::Sequence<8>, ck::Sequence<8>>>());
-                instances.push_back( std::make_unique<HiptensorDeviceElementwiseImpl<ck::Tuple<DataType>, ck::Tuple<DataType>, PassThrough, RANK, 256, 128, 128, 32, 32, ck::Sequence<1, 0>, ck::Sequence<16>, ck::Sequence<16>>>());
                 // clang-format on
             }
 
@@ -177,16 +163,6 @@ namespace hiptensor
                                                               RANK>>>& instances)
             {
                 // clang-format off
-                instances.push_back( std::make_unique<HiptensorDeviceElementwiseImpl<ck::Tuple<DataType>, ck::Tuple<DataType>, PassThrough, RANK, 256, 64, 64, 16, 16, ck::Sequence<0, 1>, ck::Sequence<1>, ck::Sequence<1>>>());
-                instances.push_back( std::make_unique<HiptensorDeviceElementwiseImpl<ck::Tuple<DataType>, ck::Tuple<DataType>, PassThrough, RANK, 256, 64, 64, 16, 16, ck::Sequence<0, 1>, ck::Sequence<2>, ck::Sequence<2>>>());
-                instances.push_back( std::make_unique<HiptensorDeviceElementwiseImpl<ck::Tuple<DataType>, ck::Tuple<DataType>, PassThrough, RANK, 256, 64, 64, 16, 16, ck::Sequence<0, 1>, ck::Sequence<4>, ck::Sequence<4>>>());
-                instances.push_back( std::make_unique<HiptensorDeviceElementwiseImpl<ck::Tuple<DataType>, ck::Tuple<DataType>, PassThrough, RANK, 256, 64, 64, 16, 16, ck::Sequence<0, 1>, ck::Sequence<8>, ck::Sequence<8>>>());
-                instances.push_back( std::make_unique<HiptensorDeviceElementwiseImpl<ck::Tuple<DataType>, ck::Tuple<DataType>, PassThrough, RANK, 256, 64, 64, 16, 16, ck::Sequence<0, 1>, ck::Sequence<16>, ck::Sequence<16>>>());
-                instances.push_back( std::make_unique<HiptensorDeviceElementwiseImpl<ck::Tuple<DataType>, ck::Tuple<DataType>, PassThrough, RANK, 256, 64, 64, 16, 16, ck::Sequence<1, 0>, ck::Sequence<1>, ck::Sequence<1>>>());
-                instances.push_back( std::make_unique<HiptensorDeviceElementwiseImpl<ck::Tuple<DataType>, ck::Tuple<DataType>, PassThrough, RANK, 256, 64, 64, 16, 16, ck::Sequence<1, 0>, ck::Sequence<2>, ck::Sequence<2>>>());
-                instances.push_back( std::make_unique<HiptensorDeviceElementwiseImpl<ck::Tuple<DataType>, ck::Tuple<DataType>, PassThrough, RANK, 256, 64, 64, 16, 16, ck::Sequence<1, 0>, ck::Sequence<4>, ck::Sequence<4>>>());
-                instances.push_back( std::make_unique<HiptensorDeviceElementwiseImpl<ck::Tuple<DataType>, ck::Tuple<DataType>, PassThrough, RANK, 256, 64, 64, 16, 16, ck::Sequence<1, 0>, ck::Sequence<8>, ck::Sequence<8>>>());
-                instances.push_back( std::make_unique<HiptensorDeviceElementwiseImpl<ck::Tuple<DataType>, ck::Tuple<DataType>, PassThrough, RANK, 256, 64, 64, 16, 16, ck::Sequence<1, 0>, ck::Sequence<16>, ck::Sequence<16>>>());
                 // clang-format on
             }
 
@@ -199,12 +175,8 @@ namespace hiptensor
             {
                 // clang-format off
                 instances.push_back( std::make_unique<HiptensorDeviceElementwiseImpl<ck::Tuple<DataType>, ck::Tuple<DataType>, PassThrough, RANK, 256, 128, 128, 8, 8, ck::Sequence<0, 1>, ck::Sequence<1>, ck::Sequence<1>>>());
-                instances.push_back( std::make_unique<HiptensorDeviceElementwiseImpl<ck::Tuple<DataType>, ck::Tuple<DataType>, PassThrough, RANK, 256, 128, 128, 8, 8, ck::Sequence<0, 1>, ck::Sequence<2>, ck::Sequence<2>>>());
-                instances.push_back( std::make_unique<HiptensorDeviceElementwiseImpl<ck::Tuple<DataType>, ck::Tuple<DataType>, PassThrough, RANK, 256, 128, 128, 8, 8, ck::Sequence<0, 1>, ck::Sequence<4>, ck::Sequence<4>>>());
                 instances.push_back( std::make_unique<HiptensorDeviceElementwiseImpl<ck::Tuple<DataType>, ck::Tuple<DataType>, PassThrough, RANK, 256, 128, 128, 8, 8, ck::Sequence<0, 1>, ck::Sequence<8>, ck::Sequence<8>>>());
                 instances.push_back( std::make_unique<HiptensorDeviceElementwiseImpl<ck::Tuple<DataType>, ck::Tuple<DataType>, PassThrough, RANK, 256, 128, 128, 8, 8, ck::Sequence<1, 0>, ck::Sequence<1>, ck::Sequence<1>>>());
-                instances.push_back( std::make_unique<HiptensorDeviceElementwiseImpl<ck::Tuple<DataType>, ck::Tuple<DataType>, PassThrough, RANK, 256, 128, 128, 8, 8, ck::Sequence<1, 0>, ck::Sequence<2>, ck::Sequence<2>>>());
-                instances.push_back( std::make_unique<HiptensorDeviceElementwiseImpl<ck::Tuple<DataType>, ck::Tuple<DataType>, PassThrough, RANK, 256, 128, 128, 8, 8, ck::Sequence<1, 0>, ck::Sequence<4>, ck::Sequence<4>>>());
                 instances.push_back( std::make_unique<HiptensorDeviceElementwiseImpl<ck::Tuple<DataType>, ck::Tuple<DataType>, PassThrough, RANK, 256, 128, 128, 8, 8, ck::Sequence<1, 0>, ck::Sequence<8>, ck::Sequence<8>>>());
                 // clang-format on
             }
