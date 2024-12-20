@@ -24,19 +24,24 @@
  *
  *******************************************************************************/
 
-#ifndef PERMUTATION_INSTANCE_SELECTION_HPP
-#define PERMUTATION_INSTANCE_SELECTION_HPP
+#include "../permutation_solution.hpp"
+#include "../permutation_solution_instances.hpp"
 
-#include "data_types.hpp"
-#include "permutation_types.hpp"
+// Ensure access to
+#include "../device/hiptensor_permutation_scale_instances.hpp"
 
 namespace hiptensor
 {
-    InstanceHyperParams selectInstanceParams(std::vector<Uid> const&     lengths,
-                                             std::vector<int32_t> const& outputMode,
-                                             hipDataType                 typeIn,
-                                             hipDataType                 typeOut,
-                                             ck::index_t                 numDim);
+    void PermutationSolutionInstances::PermutationSolution6DFloatNoopInstances()
+    {
+        // Register all the solutions exactly once
+        // 6d Permutation
+        registerSolutions(
+            enumeratePermutationSolutions<ck::Tuple<float>,
+                                          ck::Tuple<float>,
+                                          ck::tensor_operation::element_wise::PassThrough,
+                                          ck::tensor_operation::element_wise::PassThrough,
+                                          ck::tensor_operation::element_wise::PassThrough,
+                                          6>());
+    }
 } // namespace hiptensor
-
-#endif // PERMUTATION_INSTANCE_SELECTION_HPP
