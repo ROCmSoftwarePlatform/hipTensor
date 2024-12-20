@@ -51,6 +51,51 @@ namespace ck
             {
                 template <typename InDataTypeTuple,
                           typename OutDataTypeTuple,
+                          typename ElementwiseOperation,
+                          index_t NumDim,
+                          index_t BlockSize,
+                          index_t M0PerBlock,
+                          index_t M1PerBlock,
+                          index_t M0PerThread,
+                          index_t M1PerThread,
+                          typename ThreadClusterArrangeOrder,
+                          typename InScalarPerVectorSeq,
+                          typename OutScalarPerVectorSeq>
+                struct HiptensorDeviceElementwiseImpl
+                    : public ck::tensor_operation::device::DeviceElementwiseImpl<
+                          InDataTypeTuple,
+                          OutDataTypeTuple,
+                          ElementwiseOperation,
+                          NumDim,
+                          BlockSize,
+                          M0PerBlock,
+                          M1PerBlock,
+                          M0PerThread,
+                          M1PerThread,
+                          ThreadClusterArrangeOrder,
+                          InScalarPerVectorSeq,
+                          OutScalarPerVectorSeq>
+                {
+
+                    std::string GetTypeString() const override
+                    {
+                        auto str = std::stringstream();
+                        str << NumDim << "_";
+                        str << BlockSize << "_";
+                        str << M0PerBlock << "_";
+                        str << M1PerBlock << "_";
+                        str << M0PerThread << "_";
+                        str << M1PerThread << "_";
+                        str << ThreadClusterArrangeOrder::At(0) << "_";
+                        str << ThreadClusterArrangeOrder::At(1) << "_";
+                        str << InScalarPerVectorSeq::At(0) << "_";
+                        str << OutScalarPerVectorSeq::At(0);
+                        return str.str();
+                    }
+                };
+
+                template <typename InDataTypeTuple,
+                          typename OutDataTypeTuple,
                           typename Aop,
                           typename Bop,
                           typename Scale,
@@ -95,28 +140,188 @@ namespace ck
                                                      ThreadClusterArrangeOrder,
                                                      InScalarPerVectorSeq,
                                                      OutScalarPerVectorSeq>::hashCode(),
-                             std::make_unique<DeviceElementwiseImpl<InDataTypeTuple,
-                                                                    OutDataTypeTuple,
-                                                                    ElementwiseOperation,
-                                                                    NumDim,
-                                                                    BlockSize,
-                                                                    M0PerBlock,
-                                                                    M1PerBlock,
-                                                                    M0PerThread,
-                                                                    M1PerThread,
-                                                                    ThreadClusterArrangeOrder,
-                                                                    InScalarPerVectorSeq,
-                                                                    OutScalarPerVectorSeq>>()});
+                             std::make_unique<
+                                 HiptensorDeviceElementwiseImpl<InDataTypeTuple,
+                                                                OutDataTypeTuple,
+                                                                ElementwiseOperation,
+                                                                NumDim,
+                                                                BlockSize,
+                                                                M0PerBlock,
+                                                                M1PerBlock,
+                                                                M0PerThread,
+                                                                M1PerThread,
+                                                                ThreadClusterArrangeOrder,
+                                                                InScalarPerVectorSeq,
+                                                                OutScalarPerVectorSeq>>()});
                     }
                     static auto GetInstances()
                     {
                         std::unordered_map<hiptensor::Uid, std::unique_ptr<DeviceOp>> opPtrs;
                         // clang-format off
-                        addInstance<256, 64, 64, 4, 4, ck::Sequence<0, 1>, ck::Sequence<4>, ck::Sequence<4>>(opPtrs);
-                        addInstance<256, 64, 64, 4, 4, ck::Sequence<0, 1>, ck::Sequence<1>, ck::Sequence<1>>(opPtrs);
+                        if constexpr(std::is_same_v<InDataTypeTuple, ck::Tuple<float>> && NumDim == 2) {
 
-                        addInstance<256, 64, 64, 4, 4, ck::Sequence<1, 0>, ck::Sequence<4>, ck::Sequence<4>>(opPtrs);
-                        addInstance<256, 64, 64, 4, 4, ck::Sequence<1, 0>, ck::Sequence<1>, ck::Sequence<1>>(opPtrs);
+                            addInstance<256 , 64  , 64  , 4  , 4  , ck::Sequence<0 , 1> , ck::Sequence<4>  , ck::Sequence<4>>(opPtrs);
+                            addInstance<64  , 16  , 64  , 4  , 4  , ck::Sequence<0 , 1> , ck::Sequence<4>  , ck::Sequence<4>>(opPtrs);
+                            addInstance<128 , 32  , 64  , 4  , 4  , ck::Sequence<0 , 1> , ck::Sequence<4>  , ck::Sequence<4>>(opPtrs);
+                            addInstance<128 , 16  , 128 , 4  , 4  , ck::Sequence<0 , 1> , ck::Sequence<4>  , ck::Sequence<4>>(opPtrs);
+                            addInstance<32  , 32  , 64  , 8  , 8  , ck::Sequence<0 , 1> , ck::Sequence<8>  , ck::Sequence<8>>(opPtrs);
+                            addInstance<256 , 32  , 128 , 4  , 4  , ck::Sequence<0 , 1> , ck::Sequence<4>  , ck::Sequence<4>>(opPtrs);
+                            addInstance<64  , 64  , 64  , 8  , 8  , ck::Sequence<0 , 1> , ck::Sequence<8>  , ck::Sequence<8>>(opPtrs);
+                            addInstance<32  , 16  , 32  , 4  , 4  , ck::Sequence<0 , 1> , ck::Sequence<4>  , ck::Sequence<4>>(opPtrs);
+                            addInstance<64  , 32  , 128 , 8  , 8  , ck::Sequence<0 , 1> , ck::Sequence<8>  , ck::Sequence<8>>(opPtrs);
+                            addInstance<64  , 32  , 32  , 4  , 4  , ck::Sequence<0 , 1> , ck::Sequence<4>  , ck::Sequence<4>>(opPtrs);
+                            addInstance<128 , 32  , 256 , 8  , 8  , ck::Sequence<0 , 1> , ck::Sequence<8>  , ck::Sequence<8>>(opPtrs);
+                            addInstance<128 , 128 , 64  , 8  , 8  , ck::Sequence<0 , 1> , ck::Sequence<8>  , ck::Sequence<8>>(opPtrs);
+                            addInstance<256 , 64  , 256 , 8  , 8  , ck::Sequence<0 , 1> , ck::Sequence<8>  , ck::Sequence<8>>(opPtrs);
+                            addInstance<32  , 32  , 16  , 4  , 4  , ck::Sequence<0 , 1> , ck::Sequence<4>  , ck::Sequence<4>>(opPtrs);
+                            addInstance<256 , 128 , 128 , 16 , 16 , ck::Sequence<0 , 1> , ck::Sequence<16> , ck::Sequence<16>>(opPtrs);
+                            addInstance<128 , 64  , 32  , 4  , 4  , ck::Sequence<0 , 1> , ck::Sequence<4>  , ck::Sequence<4>>(opPtrs);
+                            addInstance<256 , 128 , 128 , 16 , 16 , ck::Sequence<0 , 1> , ck::Sequence<8>  , ck::Sequence<8>>(opPtrs);
+                            addInstance<256 , 128 , 128 , 16 , 16 , ck::Sequence<1 , 0> , ck::Sequence<16> , ck::Sequence<16>>(opPtrs);
+                            addInstance<256 , 128 , 128 , 16 , 16 , ck::Sequence<0 , 1> , ck::Sequence<4>  , ck::Sequence<4>>(opPtrs);
+                            addInstance<256 , 256 , 64  , 8  , 8  , ck::Sequence<0 , 1> , ck::Sequence<8>  , ck::Sequence<8>>(opPtrs);
+
+                            // the following instances are the safety net to float and rank2
+                            addInstance<256 , 64  , 64  , 4  , 4  , ck::Sequence<0 , 1> , ck::Sequence<2>  , ck::Sequence<2>>(opPtrs);
+                            addInstance<256 , 64  , 64  , 4  , 4  , ck::Sequence<0 , 1> , ck::Sequence<1>  , ck::Sequence<1>>(opPtrs);
+
+                        } else if  constexpr(std::is_same_v<InDataTypeTuple, ck::Tuple<float>> && NumDim == 3) {
+
+                            addInstance<256 , 64  , 64  , 4  , 4  , ck::Sequence<0 , 1> , ck::Sequence<4>  , ck::Sequence<4>>(opPtrs);
+                            addInstance<128 , 64  , 32  , 4  , 4  , ck::Sequence<0 , 1> , ck::Sequence<4>  , ck::Sequence<4>>(opPtrs);
+                            addInstance<64  , 64  , 64  , 8  , 8  , ck::Sequence<0 , 1> , ck::Sequence<8>  , ck::Sequence<8>>(opPtrs);
+                            addInstance<128 , 32  , 64  , 4  , 4  , ck::Sequence<0 , 1> , ck::Sequence<4>  , ck::Sequence<4>>(opPtrs);
+                            addInstance<256 , 128 , 32  , 4  , 4  , ck::Sequence<0 , 1> , ck::Sequence<4>  , ck::Sequence<4>>(opPtrs);
+                            addInstance<32  , 32  , 64  , 8  , 8  , ck::Sequence<0 , 1> , ck::Sequence<8>  , ck::Sequence<8>>(opPtrs);
+                            addInstance<256 , 128 , 128 , 16 , 16 , ck::Sequence<0 , 1> , ck::Sequence<8>  , ck::Sequence<8>>(opPtrs);
+                            addInstance<64  , 16  , 64  , 4  , 4  , ck::Sequence<0 , 1> , ck::Sequence<4>  , ck::Sequence<4>>(opPtrs);
+                            addInstance<64  , 32  , 32  , 4  , 4  , ck::Sequence<0 , 1> , ck::Sequence<4>  , ck::Sequence<4>>(opPtrs);
+                            addInstance<256 , 128 , 128 , 16 , 16 , ck::Sequence<0 , 1> , ck::Sequence<16> , ck::Sequence<16>>(opPtrs);
+                            addInstance<256 , 128 , 128 , 16 , 16 , ck::Sequence<0 , 1> , ck::Sequence<4>  , ck::Sequence<4>>(opPtrs);
+                            addInstance<64  , 32  , 128 , 8  , 8  , ck::Sequence<0 , 1> , ck::Sequence<8>  , ck::Sequence<8>>(opPtrs);
+                            addInstance<128 , 32  , 256 , 8  , 8  , ck::Sequence<0 , 1> , ck::Sequence<8>  , ck::Sequence<8>>(opPtrs);
+                            addInstance<256 , 128 , 128 , 16 , 16 , ck::Sequence<1 , 0> , ck::Sequence<8>  , ck::Sequence<8>>(opPtrs);
+                            addInstance<128 , 128 , 64  , 8  , 8  , ck::Sequence<0 , 1> , ck::Sequence<8>  , ck::Sequence<8>>(opPtrs);
+                            addInstance<256 , 128 , 128 , 16 , 16 , ck::Sequence<1 , 0> , ck::Sequence<4>  , ck::Sequence<4>>(opPtrs);
+                            addInstance<128 , 128 , 16  , 4  , 4  , ck::Sequence<0 , 1> , ck::Sequence<4>  , ck::Sequence<4>>(opPtrs);
+                            addInstance<64  , 64  , 16  , 4  , 4  , ck::Sequence<0 , 1> , ck::Sequence<4>  , ck::Sequence<4>>(opPtrs);
+                            addInstance<128 , 16  , 128 , 4  , 4  , ck::Sequence<0 , 1> , ck::Sequence<4>  , ck::Sequence<4>>(opPtrs);
+                            addInstance<256 , 128 , 128 , 16 , 16 , ck::Sequence<1 , 0> , ck::Sequence<16> , ck::Sequence<16>>(opPtrs);
+
+                            // the following instances are the safety net to float and rank3
+                            addInstance<256 , 64  , 64  , 4  , 4  , ck::Sequence<0 , 1> , ck::Sequence<2>  , ck::Sequence<2>>(opPtrs);
+                            addInstance<256 , 64  , 64  , 4  , 4  , ck::Sequence<0 , 1> , ck::Sequence<1>  , ck::Sequence<1>>(opPtrs);
+
+                        } else if  constexpr(std::is_same_v<InDataTypeTuple, ck::Tuple<float>> && NumDim == 4) {
+
+                            addInstance<256 , 64  , 64  , 4  , 4  , ck::Sequence<0 , 1> , ck::Sequence<4>  , ck::Sequence<4>>(opPtrs);
+                            addInstance<64  , 32  , 32  , 4  , 4  , ck::Sequence<0 , 1> , ck::Sequence<4>  , ck::Sequence<4>>(opPtrs);
+                            addInstance<128 , 64  , 32  , 4  , 4  , ck::Sequence<0 , 1> , ck::Sequence<4>  , ck::Sequence<4>>(opPtrs);
+                            addInstance<256 , 128 , 32  , 4  , 4  , ck::Sequence<0 , 1> , ck::Sequence<4>  , ck::Sequence<4>>(opPtrs);
+                            addInstance<64  , 128 , 32  , 8  , 8  , ck::Sequence<0 , 1> , ck::Sequence<8>  , ck::Sequence<8>>(opPtrs);
+                            addInstance<256 , 128 , 128 , 16 , 16 , ck::Sequence<0 , 1> , ck::Sequence<16> , ck::Sequence<16>>(opPtrs);
+                            addInstance<256 , 128 , 128 , 16 , 16 , ck::Sequence<0 , 1> , ck::Sequence<8>  , ck::Sequence<8>>(opPtrs);
+                            addInstance<256 , 128 , 128 , 16 , 16 , ck::Sequence<0 , 1> , ck::Sequence<4>  , ck::Sequence<4>>(opPtrs);
+                            addInstance<32  , 64  , 32  , 8  , 8  , ck::Sequence<0 , 1> , ck::Sequence<8>  , ck::Sequence<8>>(opPtrs);
+                            addInstance<128 , 256 , 32  , 8  , 8  , ck::Sequence<0 , 1> , ck::Sequence<8>  , ck::Sequence<8>>(opPtrs);
+                            addInstance<64  , 64  , 16  , 4  , 4  , ck::Sequence<0 , 1> , ck::Sequence<4>  , ck::Sequence<4>>(opPtrs);
+                            addInstance<32  , 16  , 32  , 4  , 4  , ck::Sequence<0 , 1> , ck::Sequence<4>  , ck::Sequence<4>>(opPtrs);
+                            addInstance<128 , 128 , 16  , 4  , 4  , ck::Sequence<0 , 1> , ck::Sequence<4>  , ck::Sequence<4>>(opPtrs);
+                            addInstance<128 , 32  , 64  , 4  , 4  , ck::Sequence<0 , 1> , ck::Sequence<4>  , ck::Sequence<4>>(opPtrs);
+                            addInstance<32  , 32  , 64  , 8  , 8  , ck::Sequence<0 , 1> , ck::Sequence<8>  , ck::Sequence<8>>(opPtrs);
+                            addInstance<256 , 128 , 128 , 16 , 16 , ck::Sequence<1 , 0> , ck::Sequence<4>  , ck::Sequence<4>>(opPtrs);
+                            addInstance<256 , 128 , 128 , 16 , 16 , ck::Sequence<1 , 0> , ck::Sequence<8>  , ck::Sequence<8>>(opPtrs);
+                            addInstance<32  , 32  , 16  , 4  , 4  , ck::Sequence<0 , 1> , ck::Sequence<4>  , ck::Sequence<4>>(opPtrs);
+
+                            // the following instances are the safety net to float and rank4
+                            addInstance<256 , 64  , 64  , 4  , 4  , ck::Sequence<0 , 1> , ck::Sequence<2>  , ck::Sequence<2>>(opPtrs);
+                            addInstance<256 , 64  , 64  , 4  , 4  , ck::Sequence<0 , 1> , ck::Sequence<1>  , ck::Sequence<1>>(opPtrs);
+
+                        } else if  constexpr(std::is_same_v<InDataTypeTuple, ck::Tuple<ck::half_t>> && NumDim == 2) {
+
+                            addInstance<64  , 32  , 128 , 8  , 8  , ck::Sequence<0 , 1> , ck::Sequence<8>  , ck::Sequence<8>>(opPtrs);
+                            addInstance<128 , 16  , 128 , 4  , 4  , ck::Sequence<0 , 1> , ck::Sequence<4>  , ck::Sequence<4>>(opPtrs);
+                            addInstance<128 , 32  , 256 , 8  , 8  , ck::Sequence<0 , 1> , ck::Sequence<8>  , ck::Sequence<8>>(opPtrs);
+                            addInstance<256 , 32  , 128 , 4  , 4  , ck::Sequence<0 , 1> , ck::Sequence<4>  , ck::Sequence<4>>(opPtrs);
+                            addInstance<128 , 64  , 128 , 8  , 8  , ck::Sequence<0 , 1> , ck::Sequence<8>  , ck::Sequence<8>>(opPtrs);
+                            addInstance<256 , 64  , 256 , 8  , 8  , ck::Sequence<0 , 1> , ck::Sequence<8>  , ck::Sequence<8>>(opPtrs);
+                            addInstance<256 , 128 , 128 , 8  , 8  , ck::Sequence<0 , 1> , ck::Sequence<8>  , ck::Sequence<8>>(opPtrs);
+                            addInstance<256 , 128 , 128 , 16 , 16 , ck::Sequence<0 , 1> , ck::Sequence<16> , ck::Sequence<16>>(opPtrs);
+                            addInstance<64  , 64  , 64  , 8  , 8  , ck::Sequence<0 , 1> , ck::Sequence<8>  , ck::Sequence<8>>(opPtrs);
+                            addInstance<256 , 128 , 128 , 16 , 16 , ck::Sequence<1 , 0> , ck::Sequence<4>  , ck::Sequence<4>>(opPtrs);
+                            addInstance<256 , 128 , 128 , 16 , 16 , ck::Sequence<0 , 1> , ck::Sequence<4>  , ck::Sequence<4>>(opPtrs);
+                            addInstance<256 , 128 , 128 , 16 , 16 , ck::Sequence<1 , 0> , ck::Sequence<16> , ck::Sequence<16>>(opPtrs);
+                            addInstance<64  , 16  , 64  , 4  , 4  , ck::Sequence<0 , 1> , ck::Sequence<4>  , ck::Sequence<4>>(opPtrs);
+                            addInstance<32  , 32  , 64  , 8  , 8  , ck::Sequence<0 , 1> , ck::Sequence<8>  , ck::Sequence<8>>(opPtrs);
+                            addInstance<32  , 16  , 32  , 4  , 4  , ck::Sequence<0 , 1> , ck::Sequence<4>  , ck::Sequence<4>>(opPtrs);
+                            addInstance<256 , 128 , 128 , 16 , 16 , ck::Sequence<0 , 1> , ck::Sequence<8>  , ck::Sequence<8>>(opPtrs);
+                            addInstance<64  , 128 , 32  , 8  , 8  , ck::Sequence<0 , 1> , ck::Sequence<8>  , ck::Sequence<8>>(opPtrs);
+                            addInstance<64  , 32  , 32  , 4  , 4  , ck::Sequence<0 , 1> , ck::Sequence<4>  , ck::Sequence<4>>(opPtrs);
+                            addInstance<128 , 128 , 64  , 8  , 8  , ck::Sequence<0 , 1> , ck::Sequence<8>  , ck::Sequence<8>>(opPtrs);
+                            addInstance<256 , 64  , 64  , 4  , 4  , ck::Sequence<0 , 1> , ck::Sequence<4>  , ck::Sequence<4>>(opPtrs);
+
+                            // the following instances are the safety net to half and rank2
+                            addInstance<64  , 32  , 128 , 8  , 8  , ck::Sequence<0 , 1> , ck::Sequence<2>  , ck::Sequence<2>>(opPtrs);
+                            addInstance<64  , 32  , 128 , 8  , 8  , ck::Sequence<0 , 1> , ck::Sequence<1>  , ck::Sequence<1>>(opPtrs);
+
+                        } else if  constexpr(std::is_same_v<InDataTypeTuple, ck::Tuple<ck::half_t>> && NumDim == 3) {
+
+                            addInstance<256 , 128 , 128 , 8  , 8  , ck::Sequence<0 , 1> , ck::Sequence<8>  , ck::Sequence<8>>(opPtrs);
+                            addInstance<64  , 32  , 128 , 8  , 8  , ck::Sequence<0 , 1> , ck::Sequence<8>  , ck::Sequence<8>>(opPtrs);
+                            addInstance<128 , 64  , 128 , 8  , 8  , ck::Sequence<0 , 1> , ck::Sequence<8>  , ck::Sequence<8>>(opPtrs);
+                            addInstance<64  , 128 , 32  , 8  , 8  , ck::Sequence<0 , 1> , ck::Sequence<8>  , ck::Sequence<8>>(opPtrs);
+                            addInstance<256 , 128 , 128 , 16 , 16 , ck::Sequence<1 , 0> , ck::Sequence<4>  , ck::Sequence<4>>(opPtrs);
+                            addInstance<256 , 128 , 128 , 16 , 16 , ck::Sequence<0 , 1> , ck::Sequence<4>  , ck::Sequence<4>>(opPtrs);
+                            addInstance<256 , 128 , 128 , 16 , 16 , ck::Sequence<0 , 1> , ck::Sequence<16> , ck::Sequence<16>>(opPtrs);
+                            addInstance<256 , 128 , 128 , 16 , 16 , ck::Sequence<1 , 0> , ck::Sequence<16> , ck::Sequence<16>>(opPtrs);
+                            addInstance<128 , 256 , 32  , 8  , 8  , ck::Sequence<0 , 1> , ck::Sequence<8>  , ck::Sequence<8>>(opPtrs);
+                            addInstance<128 , 32  , 256 , 8  , 8  , ck::Sequence<0 , 1> , ck::Sequence<8>  , ck::Sequence<8>>(opPtrs);
+                            addInstance<256 , 64  , 256 , 8  , 8  , ck::Sequence<0 , 1> , ck::Sequence<8>  , ck::Sequence<8>>(opPtrs);
+                            addInstance<128 , 16  , 128 , 4  , 4  , ck::Sequence<0 , 1> , ck::Sequence<4>  , ck::Sequence<4>>(opPtrs);
+                            addInstance<64  , 64  , 64  , 8  , 8  , ck::Sequence<0 , 1> , ck::Sequence<8>  , ck::Sequence<8>>(opPtrs);
+                            addInstance<32  , 64  , 32  , 8  , 8  , ck::Sequence<0 , 1> , ck::Sequence<8>  , ck::Sequence<8>>(opPtrs);
+                            addInstance<128 , 128 , 64  , 8  , 8  , ck::Sequence<0 , 1> , ck::Sequence<8>  , ck::Sequence<8>>(opPtrs);
+                            addInstance<256 , 256 , 64  , 8  , 8  , ck::Sequence<0 , 1> , ck::Sequence<8>  , ck::Sequence<8>>(opPtrs);
+                            addInstance<256 , 32  , 128 , 4  , 4  , ck::Sequence<0 , 1> , ck::Sequence<4>  , ck::Sequence<4>>(opPtrs);
+                            addInstance<256 , 128 , 128 , 16 , 16 , ck::Sequence<0 , 1> , ck::Sequence<8>  , ck::Sequence<8>>(opPtrs);
+                            addInstance<64  , 32  , 32  , 4  , 4  , ck::Sequence<0 , 1> , ck::Sequence<4>  , ck::Sequence<4>>(opPtrs);
+                            addInstance<256 , 128 , 32  , 4  , 4  , ck::Sequence<0 , 1> , ck::Sequence<4>  , ck::Sequence<4>>(opPtrs);
+
+                            // the following instances are the safety net to half and rank3
+                            addInstance<256 , 128 , 128 , 8  , 8  , ck::Sequence<0 , 1> , ck::Sequence<2>  , ck::Sequence<2>>(opPtrs);
+                            addInstance<256 , 128 , 128 , 8  , 8  , ck::Sequence<0 , 1> , ck::Sequence<1>  , ck::Sequence<1>>(opPtrs);
+
+                        } else if  constexpr(std::is_same_v<InDataTypeTuple, ck::Tuple<ck::half_t>> && NumDim == 4) {
+
+                            addInstance<64  , 128 , 32  , 8  , 8  , ck::Sequence<0 , 1> , ck::Sequence<8>  , ck::Sequence<8>>(opPtrs);
+                            addInstance<256 , 128 , 128 , 8  , 8  , ck::Sequence<0 , 1> , ck::Sequence<8>  , ck::Sequence<8>>(opPtrs);
+                            addInstance<128 , 256 , 32  , 8  , 8  , ck::Sequence<0 , 1> , ck::Sequence<8>  , ck::Sequence<8>>(opPtrs);
+                            addInstance<32  , 64  , 32  , 8  , 8  , ck::Sequence<0 , 1> , ck::Sequence<8>  , ck::Sequence<8>>(opPtrs);
+                            addInstance<256 , 128 , 32  , 4  , 4  , ck::Sequence<0 , 1> , ck::Sequence<4>  , ck::Sequence<4>>(opPtrs);
+                            addInstance<256 , 64  , 256 , 8  , 8  , ck::Sequence<0 , 1> , ck::Sequence<8>  , ck::Sequence<8>>(opPtrs);
+                            addInstance<128 , 64  , 32  , 4  , 4  , ck::Sequence<0 , 1> , ck::Sequence<4>  , ck::Sequence<4>>(opPtrs);
+                            addInstance<256 , 128 , 128 , 16 , 16 , ck::Sequence<0 , 1> , ck::Sequence<4>  , ck::Sequence<4>>(opPtrs);
+                            addInstance<256 , 128 , 128 , 16 , 16 , ck::Sequence<1 , 0> , ck::Sequence<4>  , ck::Sequence<4>>(opPtrs);
+                            addInstance<64  , 32  , 128 , 8  , 8  , ck::Sequence<0 , 1> , ck::Sequence<8>  , ck::Sequence<8>>(opPtrs);
+                            addInstance<256 , 256 , 64  , 8  , 8  , ck::Sequence<0 , 1> , ck::Sequence<8>  , ck::Sequence<8>>(opPtrs);
+                            addInstance<64  , 32  , 32  , 4  , 4  , ck::Sequence<0 , 1> , ck::Sequence<4>  , ck::Sequence<4>>(opPtrs);
+                            addInstance<128 , 128 , 64  , 8  , 8  , ck::Sequence<0 , 1> , ck::Sequence<8>  , ck::Sequence<8>>(opPtrs);
+                            addInstance<64  , 64  , 64  , 8  , 8  , ck::Sequence<0 , 1> , ck::Sequence<8>  , ck::Sequence<8>>(opPtrs);
+                            addInstance<128 , 64  , 128 , 8  , 8  , ck::Sequence<0 , 1> , ck::Sequence<8>  , ck::Sequence<8>>(opPtrs);
+                            addInstance<256 , 128 , 128 , 16 , 16 , ck::Sequence<0 , 1> , ck::Sequence<16> , ck::Sequence<16>>(opPtrs);
+                            addInstance<256 , 128 , 128 , 16 , 16 , ck::Sequence<0 , 1> , ck::Sequence<8>  , ck::Sequence<8>>(opPtrs);
+                            addInstance<128 , 32  , 256 , 8  , 8  , ck::Sequence<0 , 1> , ck::Sequence<8>  , ck::Sequence<8>>(opPtrs);
+                            addInstance<256 , 32  , 128 , 4  , 4  , ck::Sequence<0 , 1> , ck::Sequence<4>  , ck::Sequence<4>>(opPtrs);
+                            addInstance<256 , 128 , 128 , 8  , 8  , ck::Sequence<0 , 1> , ck::Sequence<1>  , ck::Sequence<1>>(opPtrs);
+
+                            // the following instances are the safety net to half and rank4
+                            addInstance<64  , 128 , 32  , 8  , 8  , ck::Sequence<0 , 1> , ck::Sequence<2>  , ck::Sequence<2>>(opPtrs);
+                            addInstance<64  , 128 , 32  , 8  , 8  , ck::Sequence<0 , 1> , ck::Sequence<1>  , ck::Sequence<1>>(opPtrs);
+                        } else if  constexpr(NumDim == 5 || NumDim == 6) {
+                            addInstance<256 , 64  , 64  , 4  , 4  , ck::Sequence<0 , 1> , ck::Sequence<4>  , ck::Sequence<4>>(opPtrs);
+                            addInstance<256 , 64  , 64  , 4  , 4  , ck::Sequence<0 , 1> , ck::Sequence<2>  , ck::Sequence<2>>(opPtrs);
+                            addInstance<256 , 64  , 64  , 4  , 4  , ck::Sequence<0 , 1> , ck::Sequence<1>  , ck::Sequence<1>>(opPtrs);
+                        }
                         // clang-format on
                         return opPtrs;
                     }

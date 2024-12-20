@@ -148,21 +148,14 @@ hiptensorStatus_t hiptensorPermutation(const hiptensorHandle_t*           handle
         return errorCode;
     }
 
-    int   nDims          = descA->mLengths.size();
-    auto  ADataType      = descA->mType;
-    auto  BDataType      = descB->mType;
-    auto  AOp            = descA->mUnaryOp;
-    auto  BOp            = descB->mUnaryOp;
-    auto& instances      = hiptensor::PermutationSolutionInstances::instance();
-    auto  instanceParams = selectInstanceParams(descA->mLengths,
-                                               ADataType,
-                                               BDataType,
-                                               AOp,
-                                               BOp,
-                                               hiptensor::PermutationOpId_t::SCALE,
-                                               nDims);
-    auto  solutions      = instances->query(
-        ADataType, BDataType, AOp, BOp, hiptensor::PermutationOpId_t::SCALE, nDims, instanceParams);
+    auto& instances = hiptensor::PermutationSolutionInstances::instance();
+    auto  solutions = instances->query(alpha,
+                                      descA,
+                                      modeA,
+                                      descB,
+                                      modeB,
+                                      typeScalar,
+                                      hiptensor::PermutationInstanceType_t::Device);
 
     bool canRun = false;
     for(auto pSolution : solutions)

@@ -41,7 +41,19 @@ namespace hiptensor
      */
     enum struct PermutationOpId_t : int32_t
     {
-        SCALE = 0,
+        SCALE,
+        PASS_THROUGH,
+        UNKNOWN,
+    };
+
+    /**
+     * \brief This enum categorizes the permutation instance
+     * \details Device instances run on GPUs, while host instances run on CPUs.
+     */
+    enum struct PermutationInstanceType_t : int32_t
+    {
+        Device,
+        Host,
         UNKNOWN,
     };
 
