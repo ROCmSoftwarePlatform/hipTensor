@@ -160,6 +160,12 @@ if(NOT WIN32 AND ${hip_VERSION_FLAT} GREATER 600241132)
   add_compile_options("SHELL: -mllvm -amdgpu-function-calls=false")
 endif()
 
+set(MINIMUM_REQUIRED_ROCM_VERSION 6.3.0)
+if(NOT DEFINED ROCM_PLATFORM_VERSION OR ${ROCM_PLATFORM_VERSION} VERSION_LESS ${MINIMUM_REQUIRED_ROCM_VERSION})
+  message(FATAL_ERROR "${PROJECT_NAME} 1.4.0 and later versions require at least ROCm version ${MINIMUM_REQUIRED_ROCM_VERSION} for support.\nThe detected ROCm version is ${ROCM_PLATFORM_VERSION}.")
+endif()
+
+
 # Configure library build
 add_subdirectory(library/src)
 
